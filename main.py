@@ -9,7 +9,7 @@ candidates = set()   # alternative words
 
 feedback = {"green": dict(),    # index: letter. The correct letter in correct index
             "yellow": set(),    # TODO: use dict
-            "black": set()}     # set of incorrect letters
+            "black": set()}     # set of incorrect letters, these letters shouldn't be in the candidate
 
 
 def try_answer() -> bool:
@@ -25,6 +25,7 @@ def try_answer() -> bool:
 
     if this_try == correct:
         print("Bingo! Congratulations!")
+        print("Total attempts:", has_tried)
         return True
 
     compare()
@@ -51,6 +52,7 @@ def compare():
             feedback["yellow"].add(letter)
         elif correct[index] == this_try[index]:  # green
             feedback["green"][index] = letter
+
     print("Green:", feedback["green"])
     print("Yellow:", feedback["yellow"])
     print("Black:", feedback["black"])
@@ -60,15 +62,16 @@ def select_candidate():
     """
     update candidates according to global feedback
     1. initial selection: if the candidates list is empty, select matching words from initial_candidates
-    2. green selection:   remove words with letters in incorrect index  # todo: add more matching words
+    2. green selection:   remove words with letters in incorrect index
+    # TODO: add more matching words i.e. how to make full use of updated Green information?
     3. black selection:   remove words with wrong letters
-    4. yellow selection:  remove words with wrong letters  # todo:remove right letters in wrong index
+    4. yellow selection:  remove words with wrong letters  # TODO: remove right letters in wrong index
 
     :return: the first candidate in the list of candidates
     """
     global candidates
     candidates = list(candidates)  # convert set into list, for iterating
-    # 1. initial selection
+    # 1. initial selection according to the first feedback
     if len(candidates) == 0:
         for candidate in initial_candidates:
             flag = 1
@@ -79,14 +82,17 @@ def select_candidate():
             if flag:
                 candidates.append(candidate)
         print("After initial selection, length of candidates:", len(candidates))
+
     # 2. green selection
     if len(feedback["green"].keys()) > 0:
+
         for candidate in candidates:
             for key in feedback["green"].keys():
                 if candidate[key] != feedback["green"][key]:
                     candidates.remove(candidate)
                     break
     print("After green selection, length of candidates:", len(candidates))
+
     # 3. black selection
     if len(feedback["black"]) > 0:
         black_chars = list(feedback["black"])
@@ -94,7 +100,6 @@ def select_candidate():
         for candidate in candidates:
             for char in black_chars:
                 if char in candidate:
-                    # print(char, "in", candidate)
                     candidates.remove(candidate)
                     break
 
@@ -116,11 +121,13 @@ def select_candidate():
 
 
 if __name__ == '__main__':
-    # loop
+    # loop to try
     while has_tried < max_try:
         if try_answer():
             break
         # counter
         has_tried += 1
 
-    print("has tried:", has_tried)
+    if has_tried == 5:
+        print("=" * 60)
+        print("Sorry! You Lost!")
