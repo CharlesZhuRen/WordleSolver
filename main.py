@@ -7,29 +7,40 @@ this_try = "spark"   # the word currently used for the attempt
 correct = 'chunk'    # the correct answer
 candidates = set()   # alternative words
 
-feedback = {"green": dict(),
-            "yellow": set(),
-            "black": set()}
+feedback = {"green": dict(),    # index: letter. The correct letter in correct index
+            "yellow": set(),    # TODO: use dict
+            "black": set()}     # set of incorrect letters
 
 
 def try_answer() -> bool:
     """
     1. compare the current candidate and get feedback
-    2. select next candidate
+    2. select and update next candidate
     :return: True if right answer else False
     """
     global this_try
-    print(this_try)
+    print("-----------------------")
+    print("Try", this_try, "this time")
+
     if this_try == correct:
+        print("Bingo! Congratulations!")
         return True
 
     compare()
     this_try = select_candidate()
-    print("-----------------------")
+
     return False
 
 
 def compare():
+    """
+    iterate each letter in the word and compare it with the correct answer
+    categorize and record each letter
+    1. letter not in answer:                      [black]
+    2. letter in answer but not in correct index: [yellow]
+    3. letter in answer and in correct index:     [green]
+    :return: Nothing but update global feedback in the process
+    """
     global feedback
     for index, letter in enumerate(this_try):
         if letter not in correct:  # black
