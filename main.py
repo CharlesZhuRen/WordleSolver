@@ -1,11 +1,11 @@
-from init import initial_candidates, alphabets
+from init import initial_candidates
 
 # set params here
-max_try = 5
-has_tried = 0
-this_try = "spark"
-correct = 'chunk'
-candidates = []
+max_try = 5          # the max numbers of attempts can be made
+has_tried = 0        # the number of attempts have been made
+this_try = "spark"   # the word currently used for the attempt
+correct = 'chunk'    # the correct answer
+candidates = set()   # alternative words
 
 feedback = {"green": dict(),
             "yellow": set(),
@@ -46,6 +46,7 @@ def select_candidate():
     # yellow: char in word
     # black: char not in word
     global candidates
+    candidates = list(candidates)
     # first selection: select those contain green char in right place
     if len(feedback["green"].keys()) > 0:
         if len(candidates) == 0:
@@ -71,7 +72,7 @@ def select_candidate():
         for candidate in candidates:
             for char in black_chars:
                 if char in candidate:
-                    print(char, "in", candidate)
+                    # print(char, "in", candidate)
                     candidates.remove(candidate)
                     break
 
@@ -88,8 +89,6 @@ def select_candidate():
                     break
 
     print("Yellow: length of candidates:", len(candidates))
-
-    candidates = list(set(candidates))
 
     return candidates[0]
 
