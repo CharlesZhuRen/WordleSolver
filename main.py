@@ -4,11 +4,12 @@ from init import initial_candidates
 max_try = 5          # the max numbers of attempts can be made
 has_tried = 0        # the number of attempts have been made
 this_try = "spark"   # the word currently used for the attempt
-correct = 'chunk'    # the correct answer
+correct = 'shown'    # the correct answer
 candidates = set()   # alternative words
 
 feedback = {"green": dict(),    # index: letter. The correct letter in correct index
-            "yellow": set(),    # TODO: use dict
+            # "yellow": set(),    # TODO: use dict
+            "yellow": {0:[], 1:[], 2:[], 3:[], 4:[]},    # index: [letters shouldn't appear here]
             "black": set()}     # set of incorrect letters, these letters shouldn't be in the candidate
 
 
@@ -21,7 +22,7 @@ def try_answer() -> bool:
     """
     global this_try
     print("=" * 60)
-    print("Try", this_try, "this time")
+    print("Try [", this_try, "] this time")
 
     if this_try == correct:
         print("Bingo! Congratulations!")
@@ -49,7 +50,8 @@ def compare():
         if letter not in correct:  # black
             feedback["black"].add(letter)
         elif letter in correct and correct[index] != this_try[index]:  # yellow
-            feedback["yellow"].add(letter)
+            # feedback["yellow"].add(letter)
+            feedback["yellow"][index].append(letter)
         elif correct[index] == this_try[index]:  # green
             feedback["green"][index] = letter
 
@@ -94,12 +96,13 @@ def select_candidate():
     print("After green selection, length of candidates:", len(candidates))
 
     # 3. black selection
+    # TODO: does it really work？
     if len(feedback["black"]) > 0:
         black_chars = list(feedback["black"])
 
         for candidate in candidates:
-            for char in black_chars:
-                if char in candidate:
+            for letter in candidate:
+                if letter in black_chars:
                     candidates.remove(candidate)
                     break
 
@@ -107,11 +110,12 @@ def select_candidate():
 
     # 4. yellow selection
     if len(feedback["yellow"]) > 0:
-        yellow_chars = list(feedback["yellow"])
+        # yellow_chars = list(feedback["yellow"])
 
         for candidate in candidates:
-            for char in yellow_chars:
-                if char not in candidate:
+            for index, letter in enumerate(candidate):
+                if letter in feedback["yellow"][index]:
+                # if char not in candidate:
                     candidates.remove(candidate)
                     break
 
@@ -120,7 +124,8 @@ def select_candidate():
     return candidates[0]
 
 
-if __name__ == '__main__':
+def run():
+    global has_tried
     # loop to try
     while has_tried < max_try:
         if try_answer():
@@ -130,4 +135,8 @@ if __name__ == '__main__':
 
     if has_tried == 5:
         print("=" * 60)
-        print("Sorry! You Lost!")
+        print("Sorry! You Lose!")
+
+
+if __name__ == '__main__':
+    run()
