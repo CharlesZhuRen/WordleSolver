@@ -15,6 +15,7 @@ The player must make full use of the feedback, and adjust his strategy to try ne
 until he guesses the right word in a limited chance.
 
 Example:
+
 ![avatar](/Resource/fig/README/wordle_example.png)
 
 More info: 
