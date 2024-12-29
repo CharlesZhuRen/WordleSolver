@@ -1,5 +1,6 @@
 from nltk.corpus import words
 
+# todo: use offline corpus
 word_list = words.words()
 initial_candidates = [x.lower() for x in word_list if len(x) == 5]
 initial_candidates = list(set(initial_candidates))

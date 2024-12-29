@@ -1,6 +1,5 @@
-from WordleSolver import WordleSolver
-
+from solver import Solver
 
 if __name__ == '__main__':
-    solver = WordleSolver()
-    solver.run()
+    wordle_solver = Solver()
+    wordle_solver.run()
