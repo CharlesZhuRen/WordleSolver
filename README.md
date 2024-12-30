@@ -73,6 +73,7 @@ Total attempts: 4
 ### To-Do
 
 - [ ] More optimization of v1.0
+- [ ] Allow user to interact with WordleSolver v1.0
 - [ ] Experiment to calculate the accuracy of v1.0
 - [ ] How about using a regex to do a window matching?
 - [ ] Visualization of process
