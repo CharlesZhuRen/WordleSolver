@@ -1,7 +1,5 @@
 import re
 
-from init import initial_candidates
-
 
 class Solver:
 
@@ -10,11 +8,19 @@ class Solver:
         self.max_try = 5  # the max numbers of attempts can be made
         self.has_tried = 0  # the number of attempts have been made
         self.this_try = 'spark'  # the word currently used for the attempt
-        self.correct = 'shown'  # the correct answer todo: random selection
-        self.candidates = initial_candidates  # alternative words
+        self.correct = 'crash'  # the correct answer todo: random selection
+        self.candidates = self.init_candidates()  # alternative words
         self.green = {0: '#', 1: '#', 2: '#', 3: '#', 4: '#'}  # index: letter in correct index
         self.yellow = dict()  # letter: [wrong place of letter]
         self.black = set()  # set of incorrect letters which shouldn't appear
+
+    @staticmethod
+    def init_candidates():
+        with open("Resource/data/words.txt", "r") as f:
+            initial_candidates = f.readlines()
+            initial_candidates = [x.strip() for x in initial_candidates]
+            print("loaded {} initial words".format(len(initial_candidates)))
+            return initial_candidates
 
     def peep(self):
         print("green: {}\nyellow: {}\nblack: {}".format(self.green, self.yellow, self.black))
