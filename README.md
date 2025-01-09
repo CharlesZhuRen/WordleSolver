@@ -74,7 +74,11 @@ Total attempts: 4
 
 - [ ] More optimization of v1.0
   - [x] remove dependency on NLTK
-- [ ] Allow user to interact with WordleSolver v1.0
+  - [x] randomly asks
+- [ ] Add a GUI and Allow user to interact with WordleSolver v1.0
+  - [ ] mode 1: code asks, user answers
+  - [ ] mode 2: user asks, code answers
+  - [ ] mode 3: wordle asks, user answers, code helps
 - [ ] Experiment to calculate the accuracy of v1.0
 - [ ] How about using a regex to do a window matching?
 - [ ] Visualization of process

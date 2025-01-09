@@ -1,3 +1,4 @@
+import random
 import re
 
 
@@ -8,19 +9,24 @@ class Solver:
         self.max_try = 5  # the max numbers of attempts can be made
         self.has_tried = 0  # the number of attempts have been made
         self.this_try = 'spark'  # the word currently used for the attempt
-        self.correct = 'crash'  # the correct answer todo: random selection
-        self.candidates = self.init_candidates()  # alternative words
+        self.candidates = []  # alternative words
+        self.correct_answer = ''  # the correct answer
         self.green = {0: '#', 1: '#', 2: '#', 3: '#', 4: '#'}  # index: letter in correct index
         self.yellow = dict()  # letter: [wrong place of letter]
         self.black = set()  # set of incorrect letters which shouldn't appear
 
-    @staticmethod
-    def init_candidates():
+        self.init_candidates_and_answer()
+
+    def init_candidates_and_answer(self):
         with open("Resource/data/words.txt", "r") as f:
             initial_candidates = f.readlines()
             initial_candidates = [x.strip() for x in initial_candidates]
             print("loaded {} initial words".format(len(initial_candidates)))
-            return initial_candidates
+
+            assert len(initial_candidates) > 0, "[No words loaded]"
+
+            self.candidates = initial_candidates
+            self.correct_answer = random.choice(self.candidates)
 
     def peep(self):
         print("green: {}\nyellow: {}\nblack: {}".format(self.green, self.yellow, self.black))
@@ -36,7 +42,7 @@ class Solver:
         print("=" * 60)
         print("Try [", self.this_try, "] this time")
 
-        if self.this_try == self.correct:
+        if self.this_try == self.correct_answer:
             print("Bingo! Congratulations!")
             print("Total attempts:", self.has_tried)
             return True
@@ -58,11 +64,12 @@ class Solver:
         :return: Nothing but update global feedback in the process
         """
         for index, letter in enumerate(self.this_try):
-            if letter not in self.correct:
+            if letter not in self.correct_answer:
                 self.black.add(letter)
-            elif self.correct[index] == self.this_try[index]:
+            elif self.correct_answer[index] == self.this_try[index]:
                 self.green[index] = letter
-            elif letter in self.correct and self.correct[index] != self.this_try[index] and letter not in self.green:
+            elif letter in self.correct_answer and self.correct_answer[index] != self.this_try[
+                index] and letter not in self.green:
                 if letter in self.yellow:
                     self.yellow[letter].append(index)
                 else:
