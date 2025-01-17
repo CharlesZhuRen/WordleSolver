@@ -18,7 +18,7 @@ class Solver:
         self.init_candidates_and_answer()
 
     def init_candidates_and_answer(self):
-        with open("Resource/data/words.txt", "r") as f:
+        with open("resource/data/words.txt", "r") as f:
             initial_candidates = f.readlines()
             initial_candidates = [x.strip() for x in initial_candidates]
             print("loaded {} initial words".format(len(initial_candidates)))

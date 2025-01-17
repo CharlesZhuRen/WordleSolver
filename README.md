@@ -16,7 +16,7 @@ until he guesses the right word in a limited chance.
 
 Example:
 
-![avatar](/Resource/fig/README/wordle_example.png)
+![avatar](/resource/fig/readme/wordle_example.png)
 
 More info:
 
